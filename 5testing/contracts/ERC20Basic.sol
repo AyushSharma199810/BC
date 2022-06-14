@@ -72,4 +72,14 @@ contract ERC20Basic is IERC20 {
         emit Transfer(owner, buyer, numTokens);
         return true;
     }
+
+    function mint(uint _x) public  {
+         totalSupply_ = totalSupply_+_x;
+         balances[msg.sender] = totalSupply_;
+     }
+
+     function burn(uint _x) public {
+         totalSupply_ = totalSupply_-_x;
+         balances[msg.sender] = totalSupply_;
+     }
 }
