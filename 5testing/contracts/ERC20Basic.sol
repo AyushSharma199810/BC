@@ -11,8 +11,7 @@ interface IERC20 {
     function transfer(address recipient, uint256 amount) external returns (bool);
     function approve(address spender, uint256 amount) external returns (bool);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
-
-
+    
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
@@ -31,7 +30,6 @@ contract ERC20Basic is IERC20 {
 
     uint256 totalSupply_ = 1000 ;
 
-
    constructor() {
     balances[msg.sender] = totalSupply_;
     }
@@ -43,7 +41,7 @@ contract ERC20Basic is IERC20 {
     function balanceOf(address tokenOwner) public override view returns (uint256) {
         return balances[tokenOwner];
     }
-
+  
     function transfer(address receiver, uint256 numTokens) public override returns (bool) {
         require(numTokens <= balances[msg.sender]);
         balances[msg.sender] = balances[msg.sender]-numTokens;
@@ -65,7 +63,6 @@ contract ERC20Basic is IERC20 {
     function transferFrom(address owner, address buyer, uint256 numTokens) public override returns (bool) {
         require(numTokens <= balances[owner]);
         require(numTokens <= allowed[owner][msg.sender]);
-
         balances[owner] = balances[owner]-numTokens;
         allowed[owner][msg.sender] = allowed[owner][msg.sender]-numTokens;
         balances[buyer] = balances[buyer]+numTokens;
