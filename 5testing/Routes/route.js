@@ -9,6 +9,6 @@ rout.post('/mint',control.mint);
 rout.post('/burn',control.burn);
 rout.post('/approve',control.approve);
 rout.get('/allowance',control.allowance);
-// rout.post('/transferFrom',control.transferFrom);
-rout.get('/accounts',control.accounts);
+rout.post('/transferFrom',control.transferFrom);
+// rout.get('/accounts',control.accounts);
 module.exports= {rout};
