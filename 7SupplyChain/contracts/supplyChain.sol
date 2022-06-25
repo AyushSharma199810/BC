@@ -25,14 +25,16 @@ contract supplyChain{
     string customerProductName;
     uint customerPrice;
 
-    string owner;
+    // string owner;
     string productName;
+    string productStatus;
+    string paymentStatus;
 
     //for manufacture request
       string  partName ;
       uint quantity ;
       string  date ;
-      string nameOfCompany;
+      string nameOfYourCompany;
       uint price;
 
 
@@ -53,6 +55,8 @@ contract supplyChain{
   bytes32 manufactureRequestCreatedHash;
 
   address manufactureAddress;
+  address supplierAddress;
+  address customerAddress;
 
   event OrderGenerated(string orderno);
   event MfgTrigger(string orderno);
@@ -60,40 +64,47 @@ contract supplyChain{
   event ReportSubmit(string orderno, uint category, string report);
 
 
-function A_manufactureRequest(string memory _partName , uint _quantity , string memory _date , uint _price , string memory _nameOfCompany)public returns(bytes32){
+function A_manufactureRequest(string memory _partName , uint _quantity , string memory _date , uint _price , string memory _nameOfYourCompany)  public returns(bytes32){
   //setting owner
   manufactureAddress =msg.sender;
   //saving data
   registry[0].partName = _partName;
   registry[0].quantity = _quantity;
   registry[0].date = _date;
-  registry[0].price = _price;
-  registry[0].nameOfCompany=_nameOfCompany;
+  registry[0].price = _price*10**18;
+  registry[0].nameOfYourCompany=_nameOfYourCompany;
    //creating hash
       manufactureRequestCreatedHash = keccak256(abi.encode(
                                                            registry[0].partName ,
                                                            registry[0].quantity ,
                                                            registry[0].date ,
                                                            registry[0].price ,
-                                                           registry[0].nameOfCompany
+                                                           registry[0].nameOfYourCompany
                                                           )
                                                );
   // saving data on hash
   details[manufactureRequestCreatedHash].partName = _partName;
   details[manufactureRequestCreatedHash].quantity = _quantity;
   details[manufactureRequestCreatedHash].date = _date;
-  details[manufactureRequestCreatedHash].price = _price;
-  details[manufactureRequestCreatedHash].nameOfCompany=_nameOfCompany;
+  details[manufactureRequestCreatedHash].price = _price*10**18;
+  details[manufactureRequestCreatedHash].nameOfYourCompany=_nameOfYourCompany;
+  details[manufactureRequestCreatedHash].productStatus = "Not Accepted Till Now";
+  details[manufactureRequestCreatedHash].paymentStatus = "Pending";
+  //saving data for hash detail function
+  string memory a = string(abi.encodePacked(_nameOfYourCompany,' ','Requested For Part'));
+  details[manufactureRequestCreatedHash].productName=string(abi.encodePacked(a,' ',_partName));
+  owner[manufactureRequestCreatedHash].ownerAddress = msg.sender;
+  owner[manufactureRequestCreatedHash].ownerName = _nameOfYourCompany;
  return manufactureRequestCreatedHash;
 }
 
 
   function B_supplierResponse(bytes32 _manufactureRequestedHash) public returns(bytes32){
-  
+  //for balance
     string memory _partName = details[_manufactureRequestedHash].partName ;
    uint _quantity = details[_manufactureRequestedHash].quantity;
   string memory _date= details[_manufactureRequestedHash].date ;
-  string memory _nameOfCompany = details[_manufactureRequestedHash].nameOfCompany;
+  string memory _nameOfYourCompany = details[_manufactureRequestedHash].nameOfYourCompany;
   uint _price = details[_manufactureRequestedHash].price;
      //saving supplier data
       registry[0].supplierName = 'Tata';
@@ -101,8 +112,7 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
       registry[0].supplierQuantity =_quantity;
       registry[0].supplierDate = _date;
       registry[0].supplierPrice = _price;
-      registry[0].owner = 'Supplier Tata';
-      registry[0].nameOfCompany = _nameOfCompany;
+      registry[0].nameOfYourCompany = _nameOfYourCompany;
       //creating hash
       supplierCreatedHash = keccak256(abi.encode(
                            registry[0].supplierName,
@@ -110,8 +120,7 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
                            registry[0].supplierQuantity ,
                            registry[0].supplierDate,
                            registry[0].supplierPrice,
-                           registry[0].owner,
-                           registry[0].nameOfCompany
+                           registry[0].nameOfYourCompany
                           )
                );
 
@@ -121,8 +130,10 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
       details[supplierCreatedHash].supplierQuantity = _quantity;
       details[supplierCreatedHash].supplierPrice = _price;
       details[supplierCreatedHash].supplierDate = _date;
-      details[supplierCreatedHash].owner='Supplier Tata';
-      details[supplierCreatedHash].nameOfCompany = _nameOfCompany;
+      details[supplierCreatedHash].nameOfYourCompany = _nameOfYourCompany;
+      details[manufactureRequestCreatedHash].productStatus = "Accepted & Maded";
+      details[supplierCreatedHash].productStatus = "Accepted & Maded";
+      details[supplierCreatedHash].paymentStatus ="Pending";
       requiredParts  = true; // setting required part so manufacture cant made product without parts
       //setting part ownership to supplier
       owner[supplierCreatedHash].ownerAddress = msg.sender;
@@ -131,16 +142,21 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
       return supplierCreatedHash;
   }
 
+  function C_paymentToSupplierByManufacturer(address payable _supplierAddress)public payable{
 
-  function C_shippedPartsToManufacturer() public{
-    //transfering ownership supplier to manufacture
+    require(msg.value == details[supplierCreatedHash].supplierPrice," Odering Time Price And Current Price Not Matching");
+    require(requiredParts == true,'Supplier Part Is Not Maded');
+    _supplierAddress.transfer(msg.value);
+    details[supplierCreatedHash].paymentStatus ="Payment Complete";
+    details[supplierCreatedHash].productStatus = " Delivered To Manufacturer";
+    details[manufactureRequestCreatedHash].productStatus = " Delivered To Manufacturer";
+    details[manufactureRequestCreatedHash].paymentStatus ="Payment Completed";
+      //transfering ownership supplier to manufacturer
     owner[supplierCreatedHash].ownerAddress = manufactureAddress ;
-    owner[supplierCreatedHash].ownerName = details[manufactureRequestCreatedHash].nameOfCompany ;
+    owner[supplierCreatedHash].ownerName = details[manufactureRequestCreatedHash].nameOfYourCompany ;
     details[supplierCreatedHash].productName = details[supplierCreatedHash].supplierPartName ;
-    
-    require(requiredParts == true,'Supplier Must Made The Parts');
-    details[supplierCreatedHash].owner='Ownership Transfer From Supplier Tata To Jaguar Manufacturer';
   }
+
 
 
   function D_creatingCar(address _manufactureAddress , string memory _productName , uint _productPrice , string memory _date , uint _quantity) public returns(bytes32){
@@ -155,11 +171,9 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
       registry[3].manufacturerPartName = details[supplierCreatedHash].supplierPartName;
       registry[0].manufactureName = 'Jaguar';
       registry[0].manufactureProductName = _productName;
-      registry[0].manufacturePrice = _productPrice;
+      registry[0].manufacturePrice = _productPrice*10**18;
       registry[0].manufactureDate = _date;
       registry[0].manufactureQuantity = _quantity;
-      registry[0].owner='Jaguar manufacturer';
-      
 
       //creating hash
       manufacturerCreatedHash = keccak256(abi.encode(
@@ -171,8 +185,7 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
                                        registry[0].manufactureProductName,
                                        registry[0].manufacturePrice ,
                                        registry[0].manufactureDate,
-                                       registry[0].manufactureQuantity,
-                                       details[supplierCreatedHash].owner
+                                       registry[0].manufactureQuantity
                           )
                );
 
@@ -182,10 +195,9 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
       details[manufacturerCreatedHash].manufacturerPartName = string(abi.encodePacked(a,'',b));
       details[manufacturerCreatedHash].manufactureName = 'Jaguar';
       details[manufacturerCreatedHash].manufactureProductName = _productName;
-      details[manufacturerCreatedHash].manufacturePrice = _productPrice;
+      details[manufacturerCreatedHash].manufacturePrice =_productPrice*10**18;
       details[manufacturerCreatedHash].manufactureDate = _date;
       details[manufacturerCreatedHash].manufactureQuantity = _quantity;
-      details[manufacturerCreatedHash].owner='Jaguar manufacturer';
       //setting carownership to manufacturer
       owner[manufacturerCreatedHash].ownerAddress = msg.sender;
       owner[manufacturerCreatedHash].ownerName = 'Jaguar Manuacturer';
@@ -194,10 +206,15 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
   
   }
 
-  function E_shippedCarToCustomer(string memory _customerName , uint _customerQuantity)public returns(bytes32){
-      details[manufacturerCreatedHash].owner= _customerName;
-      details[manufacturerCreatedHash].manufactureQuantity = details[manufacturerCreatedHash].manufactureQuantity-_customerQuantity;
+  function E_shippedCarToCustomer(string memory _customerName , uint _customerQuantity , address payable _payingToManufacturer , uint _amoutPayingToManufacturer)public payable returns(bytes32){
+    // payment
+       require(msg.value*_amoutPayingToManufacturer == details[manufacturerCreatedHash].manufacturePrice," Manufacture And Customer Price Not Matching Depending Upon Quantity");
+       require(msg.value*_amoutPayingToManufacturer == _amoutPayingToManufacturer," Manufacture And Customer Price Not Matching Depending Upon Quantity");
+    _payingToManufacturer.transfer(msg.value);
+    details[manufacturerCreatedHash].paymentStatus ="Payment Complete";
+    details[manufacturerCreatedHash].productStatus = " Delivered To Customer";
 
+      details[manufacturerCreatedHash].manufactureQuantity = details[manufacturerCreatedHash].manufactureQuantity-_customerQuantity;
       //saving supplier data
     registry[0].customerName = _customerName;
     registry[0].customerQuantity =_customerQuantity;
@@ -209,50 +226,46 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
                                          );
       // saving data to 32bytes mapping to get all details
         details[customerCreatedHash].customerName = _customerName;
-        details[customerCreatedHash].customerQuantity =_customerQuantity;       
-        details[customerCreatedHash].owner=_customerName;    
+        details[customerCreatedHash].customerQuantity =_customerQuantity;         
         details[customerCreatedHash].customerProductName = details[manufacturerCreatedHash].manufactureProductName ;
          details[customerCreatedHash].customerPrice = details[manufacturerCreatedHash].manufacturePrice * _customerQuantity;                     
-      //transfering ownership
+      //transfering hash ownership manufacture to customer
       owner[manufacturerCreatedHash].ownerAddress = msg.sender;
-      owner[manufacturerCreatedHash].ownerName = 'Jaguar Manuacturer';
+      owner[manufacturerCreatedHash].ownerName = _customerName;
       details[manufacturerCreatedHash].productName =details[manufacturerCreatedHash].manufactureProductName ;
 
          return customerCreatedHash;
   }
 
-  function F_getCustomerDetail(bytes32 _customerCreatedHash)view public returns(string memory customerName , uint customerQuantity , string memory _owner , string memory customerProductName , uint customerPrice){
+  function F_getCustomerDetail(bytes32 _customerCreatedHash)view public returns(string memory customerName , uint customerQuantity , string memory customerProductName , uint customerPrice){
     return (
               details[_customerCreatedHash].customerName ,
               details[_customerCreatedHash].customerQuantity ,
-              details[_customerCreatedHash].owner ,
                details[_customerCreatedHash].customerProductName ,
                details[_customerCreatedHash].customerPrice
              );
   }
 
-  function G_getCarDetails(bytes32 _manufacturerCreatedHash) view public returns(string memory manufacturerPartName , string memory manufactureName ,uint manufacturePrice , string memory manufactureDate , uint manufactureQuantity , string memory _Owner)
+  function G_getCarDetails(bytes32 _manufacturerCreatedHash) view public returns(string memory manufacturerPartName , string memory manufactureName ,uint manufacturePrice , string memory manufactureDate , uint manufactureQuantity )
   {
       return (
               details[_manufacturerCreatedHash].manufacturerPartName ,
               details[_manufacturerCreatedHash].manufactureName ,
               details[_manufacturerCreatedHash].manufacturePrice ,
              details[_manufacturerCreatedHash].manufactureDate ,
-               details[_manufacturerCreatedHash].manufactureQuantity,
-               details[_manufacturerCreatedHash].owner
+               details[_manufacturerCreatedHash].manufactureQuantity
              );
              
   }
 
-  function H_getingSupplierDetails(bytes32 _supplierCreatedHash)public view returns(string memory supplierName , string memory supplierPartName , uint supplierQuantity , uint supplierPrice , string memory supplierDate , string memory _owner)
+  function H_getingSupplierDetails(bytes32 _supplierCreatedHash)public view returns(string memory supplierName , string memory supplierPartName , uint supplierQuantity , uint supplierPrice , string memory supplierDate )
   {
       return (
                 details[_supplierCreatedHash].supplierName,
                 details[_supplierCreatedHash].supplierPartName ,
                 details[_supplierCreatedHash].supplierQuantity ,
                 details[_supplierCreatedHash].supplierPrice ,
-                details[_supplierCreatedHash].supplierDate ,
-                details[_supplierCreatedHash].owner
+                details[_supplierCreatedHash].supplierDate 
       );
   }
 
@@ -261,15 +274,18 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
            details[_manufactureRequestCreatedHash].partName,
            details[_manufactureRequestCreatedHash].quantity,
            details[_manufactureRequestCreatedHash].date,
-           details[_manufactureRequestCreatedHash].nameOfCompany
+           details[_manufactureRequestCreatedHash].nameOfYourCompany
           );
   }
 
-  function J_ownerOfHash(bytes32 _hash) view public returns(address _ownerAddress , string memory _ownerName , string memory _productName ){
+  function J_ownerOfHash(bytes32 _hash) view public returns(address _ownerAddress , string memory _ownerName , string memory _productName ,string memory _productStatus , string memory _paymentStatus ){
     return(
             owner[_hash].ownerAddress,
             owner[_hash].ownerName,
-            details[_hash].productName
+            details[_hash].productName,
+            details[_hash].productStatus,
+            details[_hash].paymentStatus
           );
   }
+
 }
