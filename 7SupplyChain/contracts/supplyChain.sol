@@ -202,14 +202,15 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
       owner[manufacturerCreatedHash].ownerAddress = msg.sender;
       owner[manufacturerCreatedHash].ownerName = 'Jaguar Manuacturer';
        details[manufacturerCreatedHash].productName =_productName ;
+       details[manufacturerCreatedHash].productStatus = "Car Maded" ;
+       details[manufacturerCreatedHash].paymentStatus = "Not Yet Customer Order" ;
       return manufacturerCreatedHash;
   
   }
 
-  function E_shippedCarToCustomer(string memory _customerName , uint _customerQuantity , address payable _payingToManufacturer , uint _amoutPayingToManufacturer)public payable returns(bytes32){
+  function E_shippedCarToCustomer(string memory _customerName , uint _customerQuantity , address payable _payingToManufacturer )public payable returns(bytes32){
     // payment
-       require(msg.value*_amoutPayingToManufacturer == details[manufacturerCreatedHash].manufacturePrice," Manufacture And Customer Price Not Matching Depending Upon Quantity");
-       require(msg.value*_amoutPayingToManufacturer == _amoutPayingToManufacturer," Manufacture And Customer Price Not Matching Depending Upon Quantity");
+       require(msg.value == _customerQuantity*details[manufacturerCreatedHash].manufacturePrice," Manufacture And Customer Price Not Matching Depending Upon Quantity");
     _payingToManufacturer.transfer(msg.value);
     details[manufacturerCreatedHash].paymentStatus ="Payment Complete";
     details[manufacturerCreatedHash].productStatus = " Delivered To Customer";

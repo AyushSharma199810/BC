@@ -5,7 +5,10 @@ const app = express();
 const view=require('./Controlers/control.js');
 const rout=express.Router();
 app.use(bodyParser.urlencoded({extended:true}));
-const port =  process.env.PORT||2000;
+app.use(express.static(__dirname+'/frontend'));
+// app.use(express.static(__dirname+'/Controlers'));
+// console.log(__dirname);
+const port =  process.env.PORT||2004;
 app.use('/',router.rout);
 app.listen(port,()=>{
     console.log("Connection Successfull at port http://localhost:" +port)

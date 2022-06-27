@@ -7,8 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Printed Value From Web3</h1>
-    <p id="devid">Hi From HTML Page</p>
+        <p>Output Of Address</p>
+        <input type="text" id="devid">
+        <button onclick="readContract()"> Post</button>
 </body>
-<script src="./htmlScript.js"></script>
+<script>
+    function readContract(){
+    document.getElementById("devid").value = "devidislive";
+}
+</script>
 </html>
