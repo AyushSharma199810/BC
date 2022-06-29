@@ -2,13 +2,19 @@ const express = require('express');
 const path = require('path');
 const w = require('../web_new');
 const acc = w.contract;
-let manufactureOrderHash;
+let savingHash = [];
+let savingHashS =[];
 
 const main = (req , res) =>{
     res.render('main');
 }
+
 const A_manufacturePost = async (req, res) => {
-    res.render('A_manufacturePost');
+    let params ={
+        hash : 0,
+        Owner_Address : 0
+    }
+    res.render('A_manufacture',params);
 }
 
 const A_manufactureGet = async (req, res) => {
@@ -20,12 +26,16 @@ const A_manufactureGet = async (req, res) => {
       let _nameOfYourCompany = req.body.nameOfYourCompany;
       await acc.methods.A_manufactureRequest(_partName ,_quantity ,_date ,_price ,_nameOfYourCompany).send({ from: _address,gas: 1000000});
       const hash = await acc.methods.A_manufactureRequest(_partName ,_quantity ,_date ,_price ,_nameOfYourCompany).call({ from: _address,gas: 1000000});
-      manufactureOrderHash =hash;
-      res.render('A_manufactureGet',{hash: hash});
+      savingHash.push(hash);
+
+      let params ={
+        hash : savingHash,
+        Owner_Address : 0
+    }
+      res.render('A_manufacture',params);
 }
 
-
-const J_ownerOfHashGet = async (req, res) => {
+const AJ_ownerOfHashGet = async (req, res) => {
     let _address = req.body.address;
     let _orderHash = req.body.orderHash;
     const hash = await acc.methods.J_ownerOfHash(_orderHash).call({ from: _address });
@@ -34,16 +44,52 @@ const J_ownerOfHashGet = async (req, res) => {
         Owner_Name: hash._ownerName,
         Product_Name : hash._productName,
         Product_Status : hash._productStatus,
-        Payment_Status :hash._paymentStatus,
-        Manufacture_Order_Hash:manufactureOrderHash
+        Payment_Status : hash._paymentStatus,
+        hash : savingHash
     }
-    res.render('A_J_ownerOfHashGet',data);
+    res.render('A_manufacture',data);
 }
 
-const balanceOf = async (req, res) => {
-    const address = req.body.address;
-    const c = await acc.methods.balanceOf(address).call({ from: `${address}` });
-    res.send(c);
+const B_supplierResponse = async (req, res) => {
+    let params ={
+        hash : savingHash,
+        order : "fromPost",
+        hash2 : "",
+        Owner_Address : ""
+    }
+    res.render('B_supplierResponse',params);
+}
+const B_supplierResponseGet = async (req, res) => {
+    let _address = req.body.address;
+    let _hash = req.body.hash;
+    await acc.methods.B_supplierResponse(_hash).send({ from: _address,gas: 1000000});
+    const hash = await acc.methods.B_supplierResponse(_hash).call({ from: _address,gas: 1000000});
+    savingHashS.push(hash);
+    savingHash.splice(savingHash.indexOf(_hash),1);
+    let params ={
+        hash2 : savingHashS,
+        order : "Order Created",
+        hash : savingHash ,
+        Owner_Address : ""
+    }
+    res.render('B_supplierResponse' ,params );
+}
+
+const BJ_ownerOfHashGet = async (req, res) => {
+    let _address = req.body.address;
+    let _orderHash = req.body.orderHash;
+    const hash = await acc.methods.J_ownerOfHash(_orderHash).call({ from: _address });
+    let data ={
+        Owner_Address : hash._ownerAddress,
+        Owner_Name: hash._ownerName,
+        Product_Name : hash._productName,
+        Product_Status : hash._productStatus,
+        Payment_Status : hash._paymentStatus,
+        hash : savingHash,
+        hash2 : savingHashS,
+        order :""
+    }
+    res.render('B_supplierResponse',data);
 }
 
 const mint = async (req, res) => {
@@ -52,33 +98,5 @@ const mint = async (req, res) => {
     const d = await acc.methods.mint(token).send({ from: `${address}` });
     res.send(d);
 }
-const burn = async (req, res) => {
 
-    const token = req.body.token;
-    const d = await acc.methods.burn(token).send({ from: `${address}` });
-    res.send(d);
-}
-
-const approve = async (req, res) => {
-    const address = req.body.address;
-    const address2 = req.body.address2;
-    const token = req.body.token;
-    const d = await acc.methods.approve(address2, token).send({ from: `${address}` });
-    res.send(d);
-}
-
-const allowance = async (req, res) => {
-    const address = req.body.address;
-    const address2 = req.body.address2;
-    const d = await acc.methods.allowance(address, address2).call({ from: `${address}` });
-    res.send(d);
-}
-
-const transferFrom = async (req, res) => {
-    const address = req.body.address;
-    const address2 = req.body.address2;
-    const token = req.body.token;
-    const e = await acc.methods.transferFrom(address, address2, token).send({ from: `${address2}` });
-    res.send(e);
-}
-module.exports = { main, A_manufacturePost , A_manufactureGet , J_ownerOfHashGet , balanceOf, mint, burn, approve, allowance, transferFrom };
+module.exports = { main, A_manufacturePost , A_manufactureGet , AJ_ownerOfHashGet , B_supplierResponse , B_supplierResponseGet , BJ_ownerOfHashGet};

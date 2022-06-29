@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier</title>
+</head>
+<style>
+   .main{
+        position: absolute;
+        margin-left: 7%;
+        margin-top: 10%;
+        display: flex;
+    }
+    .sub{
+        width: 400px;
+        height: 550px;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+        
+    }
+    .sub2{
+        height: 200px;
+        width: 600px;
+        text-align: center;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 50px;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .sub3{
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+        width: 480px;
+        height: 550px;
+    }
+    .sub4{
+        height: 200px;
+        width: 600px;
+        text-align: center;
+        margin-left: -28.7%;
+        margin-right: 10px;
+        margin-top: 15%;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+    }
+</style>
+<body>
+    <div class="main">
+        <div class="sub">
+            <h1>Create Part</h1>
+            <form action="B_supplierResponseGet" method="post" >
+                <h3>Address Of The Supplier</h3>
+                <input type="text" name="address">
+                <h3>Enter The Manufacturer Hash To Create Part</h3>
+                <input type="text" name="hash">
+                <button>Create Part</button>
+                <%if(hash2!=0){%>
+                <h1><%=order%></h1>
+                <%}%>
+            </form>
+        </div>
+        
+        <div class="sub2">
+            <h1>Orders Hash From Manufacture</h1>
+            <%if(hash!=0){%>
+            <%hash.forEach(function(item){%>
+                <li>
+                    <%=item%>
+                </li>
+                <%});%>
+                    <%}%>
+        </div>
+        <br>
+        <div class="sub4">
+            <h1>Oders Hash Created</h1>
+            <%if(hash2!=0){%>
+                <%hash2.forEach(function(item){%>
+                    <li>
+                        <%=item%>
+                    </li>
+                    <%});%>
+                        <%}%>
+        </div>
+        
+        <div class="sub3">
+            <h1>Status</h1>
+            <form action="BJ_ownerOfHashGet" method="post">
+                <p>Address Of The Manufacturer</p>
+                <input type="text" name="address">
+                <p>Order Hash</p>
+                <input type="text" name="orderHash">
+                <button> Status </button>
+                <%if(Owner_Address!=0){%>
+                    <p>Owner Address : <%=Owner_Address%></p>
+                    <p>Owner Name : <%=Owner_Name%></p>
+                    <p>Product Name : <%=Product_Name%>
+                    </p><p>Product Status : <%=Product_Status%></p>
+                    <p>Payment Status : <%=Payment_Status%></p>
+                    <%}%>
+            </form>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
