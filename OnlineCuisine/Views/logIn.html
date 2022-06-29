@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In</title>
+</head>
+<style>
+  /* css reset */
+  * {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* css variable */
+  :root {}
+
+  /* navigation bar */
+  #navbar {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    /* justify-content: center; */
+  }
+
+  #navbar::before {
+    content: "";
+    background-color: black;
+    position: absolute;
+    height: 90%;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: -1;
+    opacity: 0.4;
+  }
+
+  /* navigation bar style  */
+  #navbar ul {
+    display: flex;
+
+  }
+
+  #navbar ul li {
+    display: flex;
+    list-style: none;
+    font-size: 1.5rem;
+  }
+
+  #navbar ul li a {
+    color: white;
+    display: block;
+    padding: 11px;
+    margin: 22px 6px;
+    border-radius: 10px;
+    text-decoration: none;
+
+  }
+
+  #navbar ul li a:hover {
+    color: black;
+    display: block;
+    padding: 11px;
+    border-radius: 200px;
+    background-color: white;
+    text-decoration: none;
+
+  }
+
+  /* home section */
+  #home {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 200px;
+    height: 250px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #home::before {
+    content: "";
+    background: url('./img/bg1.jpg') no-repeat center center/cover;
+    position: absolute;
+    height: 46%;
+    width: 100%;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+    opacity: 0.9;
+
+  }
+
+  #home h1 {
+    text-align: center;
+    color: white;
+    font-family: 'Sansita Swashed', cursive;
+  }
+
+  #home p {
+    color: white;
+    font-size: 1rem;
+    font-family: cursive;
+  }
+
+  #home h2 {
+    text-align: center;
+    color: white;
+    font-family: cursive;
+
+  }
+
+  #home form {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 2;
+  }
+
+  #home input {
+    height: 50%;
+    margin-left: 10%;
+    margin-right: 10%;
+    border-radius: 20px;
+
+
+  }
+
+  #home button {
+    height: 42%;
+    width: 10%;
+    margin-left: 45%;
+    margin-right: 45%;
+    border-radius: 20px;
+  }
+
+  /* services section */
+  #services::before {
+    content: "";
+    background: url('./img/bg.jpg') no-repeat center center/cover;
+    position: absolute;
+    height: 90%;
+    width: 100%;
+    z-index: -1;
+    top: 47%;
+    left: 0px;
+    opacity: 0.8;
+  }
+
+  #services {
+    margin: 34px;
+    display: flex;
+  }
+
+  #services .box {
+
+    border: 2px solid brown;
+    border-radius: 50px;
+    padding: 34px;
+    margin: 5px;
+    background-color: rgb(197, 193, 193);
+  }
+
+  #services .box img {
+    height: 80px;
+    display: block;
+    margin: auto;
+  }
+
+  footer {
+    background-color: black;
+    color: white;
+  }
+
+  /* utility classes */
+  .h-primary {
+    font-size: 3.8rem;
+    padding: 12px;
+  }
+
+  .h-secondary {
+    font-size: 2.3rem;
+    padding: 12px;
+  }
+
+  .btn {
+    padding: 6px 20px;
+    border: 2px solid white;
+    background-color: burlywood;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: white;
+    margin: 15px;
+    cursor: pointer;
+
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  /* DOWNLOAD APP SECTION  */
+  ._3QGpR {
+    margin-left: 35%;
+  }
+
+  ._12dJy {
+    margin-top: 10px;
+    margin-left: 10%;
+  }
+
+  /* ABOUT */
+  #about::before {
+    content: "";
+    background: url('./img/48fc8d7806d6a947fd041a8a1cf83bac1563875757.avif') no-repeat center center/cover;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+    opacity: 0.7;
+  }
+
+  .aboutclass {
+    width: 50%;
+    margin-left: 30%;
+  }
+
+  .aboutclas {
+    width: 50%;
+    margin-left: 40%;
+  }
+
+  /* LOGIN  */
+  #appform-wrapper {
+    margin-left: 40%;
+    margin-top: 10%;
+  }
+
+  #appform-wrapper::before {
+    content: "";
+    background: url('./img/bg.jpg') no-repeat center center/cover;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+  }
+
+  
+
+  /* sign up */
+  .appform-button {
+    margin-top: 10px;
+    margin-left: 12%;
+    width: 70px;
+  }
+
+  #appform-wrapper2 {
+    margin-left: 40%;
+    margin-top: 10%;
+  }
+
+  #appform-wrapper2::before {
+    content: "";
+    background: url('../img/bg1.jpg') no-repeat center center/cover;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+  }
+
+  #appform-wrapper2 label {
+    color: white;
+  }
+
+  #appform-wrapper2 a {
+    color: rgb(255, 255, 255);
+  }
+
+  #panel-form input {
+    border-radius: 10px;
+    height: 20px;
+    border-style: none;
+    background-color: rgb(130, 174, 255);
+    padding-left: 10px;
+  }
+</style>
+
+<body>
+  <nav id="navbar">
+    <ul>
+      <li class="item"><a href="/">Log In</a></li>
+      <li class="item"><a href="signUp">Sign Up</a></li>
+      <li class="item"><a href="aboutUs">About Us</a></li>
+    </ul>
+  </nav>
+  <div id="appform-wrapper">
+    <div class="appform-container clearfix">
+      <div class="panel panel-small">
+        <form id="panel-form" action="#" method="post">
+          <div class="appform-group">
+            <label>Mobile Number</label>
+            <br>
+            <input style="width: 30%;" type="text" name="email" required />
+          </div>
+          <br>
+          <div class="appform-group">
+            <label>Password</label>
+            <br>
+            <input style="width: 30%;" type="password" name="password" required/>
+          </div>
+          <input type="submit" class="appform-button" value="Log In" />
+        </form><br />
+        <p>Don't have an account? <a href="signUp">Register!</a></p>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

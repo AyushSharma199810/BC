@@ -86,7 +86,6 @@ module.exports = { contract };
 
 
 
-
 // ===========================================================
 // const Tx = require('ethereumjs-tx').Transaction;
 // const acc1 = '0xa94f0b4f050639E92D5EA196e8e42AAFd8502268';

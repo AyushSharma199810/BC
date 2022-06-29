@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+   .main{
+        position: absolute;
+        margin-left: 7%;
+        margin-top: 10%;
+        display: flex;
+    }
+    .sub{
+        width: 400px;
+        height: 550px;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .sub2{
+        height: 200px;
+        width: 600px;
+        text-align: center;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 100px;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .sub3{
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+        width: 500px;
+        height: 550px;
+    }
+</style>
+<body>
+    <div class="main">
+        <div class="sub">
+            <h1>Request For Parts</h1>
+            <form action="A_manufactureGet" method="post" >
+                <p>Address Of The Manufacturer</p>
+                <input type="text" name="address">
+                <p>Which Part You Required</p>
+                <input type="text" name="partName">
+                <p>How Much Quantity You Want Of The Part</p>
+                <input type="text" name="quantity">
+                <p>Date Of Ordering</p>
+                <input type="text" name="date">
+                <p>Price You Pay For Part For Whole Quantity</p>
+                <input type="text" name="price">
+                <p>What Is The Name Of Your Organization</p>
+                <input type="text" name="nameOfYourCompany">
+                <button onclick="fun()"> Request For Part</button>
+            </form>
+        </div>
+        
+        <div class="sub2">
+            <h1>Order Hash</h1>
+            <p id="devid"><%=hash%></p>
+        </div>
+        
+        <div class="sub3">
+            <h1>Status</h1>
+            <form action="J_ownerOfHashGet" method="post" >
+                <p>Address Of The Manufacturer</p>
+                <input type="text" name="address">
+                <p>Order Hash</p>
+                <input type="text" name="orderHash">
+                <button> Status </button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+function fun(){
+    document.getElementById("devid").value= <%=hash%>;
+}
+</script>
+</html>
