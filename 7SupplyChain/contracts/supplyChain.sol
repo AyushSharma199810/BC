@@ -35,7 +35,7 @@ contract supplyChain{
       uint quantity ;
       string  date ;
       string nameOfYourCompany;
-      uint price;
+      uint256 price;
 
 
   }
@@ -100,12 +100,13 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
 
 
   function B_supplierResponse(bytes32 _manufactureRequestedHash) public returns(bytes32){
+    supplierAddress =msg.sender;
   //for balance
     string memory _partName = details[_manufactureRequestedHash].partName ;
    uint _quantity = details[_manufactureRequestedHash].quantity;
   string memory _date= details[_manufactureRequestedHash].date ;
   string memory _nameOfYourCompany = details[_manufactureRequestedHash].nameOfYourCompany;
-  uint _price = details[_manufactureRequestedHash].price;
+  uint _price = details[_manufactureRequestedHash].price*10**18;
      //saving supplier data
       registry[0].supplierName = 'Tata';
       registry[0].supplierPartName = _partName;
@@ -143,8 +144,9 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
   }
 
   function C_paymentToSupplierByManufacturer(address payable _supplierAddress)public payable{
-
-    require(msg.value == details[supplierCreatedHash].supplierPrice," Odering Time Price And Current Price Not Matching");
+    require(_supplierAddress == supplierAddress , "Supplier Is Not Same" );
+    require(msg.sender == manufactureAddress , "Manufacure Is Not Same" );
+    require(details[manufactureRequestCreatedHash].price == msg.value," Odering Time Price And Current Price Not Matching");
     require(requiredParts == true,'Supplier Part Is Not Maded');
     _supplierAddress.transfer(msg.value);
     details[supplierCreatedHash].paymentStatus ="Payment Complete";
@@ -288,5 +290,5 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
             details[_hash].paymentStatus
           );
   }
-
+ 
 }

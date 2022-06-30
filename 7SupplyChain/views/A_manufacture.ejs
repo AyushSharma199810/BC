@@ -32,7 +32,7 @@
         text-align: center;
         margin-left: 10px;
         margin-right: 10px;
-        margin-top: 100px;
+        margin-top: 10px;
         text-decoration: none;
         border: 2px solid black;
         color: white;
@@ -50,6 +50,53 @@
         padding: 10px;
         width: 480px;
         height: 550px;
+    }
+
+    .sub4 {
+        height: 200px;
+        width: 600px;
+        text-align: center;
+        margin-left: -22.4%;
+        margin-right: 10px;
+        margin-top: 11%;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .sub5 {
+        height: 180px;
+        width: 270px;
+        margin-left: -10%;
+        /* margin-top: 20%; */
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+    }
+
+    .div1 {
+
+        margin-left: -40%;
+        margin-top: 20%;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+    }
+
+    .div2 {
+        height: 200px;
+        width: 200px;
+        margin-left: 5%;
+        margin-top: 20%;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
     }
 </style>
 
@@ -75,7 +122,7 @@
         </div>
 
         <div class="sub2">
-            <h1>Order Hash</h1>
+            <h1>Manufacture Order Hash</h1>
             <%if(hash!=0){%>
                 <%hash.forEach(function(item){%>
                     <li>
@@ -85,6 +132,21 @@
                         <%}%>
         </div>
 
+        <div class="sub4">
+            <h1>Supplier Part Hash</h1>
+            <%if(hash2!=0){%>
+                <p>
+                    <%=hash2%>
+                </p>
+                <%}%>
+                    <h2>Payment</h2>
+                    <form action="AC_paymentToSupplierByManufacturer" method="post">
+                        <input type="text" placeholder="Enter Manufacture Address" name="address">
+                        <input type="text" placeholder="Enter Supplier Address" name="address2">
+                        <input type="text" placeholder="Enter Ethers You Want To Send" name="price">
+                        <button>Pay</button>
+                    </form>
+        </div>
         <div class="sub3">
             <h1>Status</h1>
             <form action="J_ownerOfHashGet" method="post">
@@ -107,9 +169,32 @@
                     <%}%>
             </form>
         </div>
+        <div class="sub5">
+            <h1>Check Balance</h1>
+            <form action="K_manufacureBalance" method="post">
+                <input type="text" name="address"  placeholder="Enter Your Address">
+                <input type="text"  placeholder="<%=balance%>">
+                <button>Check Balance</button>
+                <p></p>
+            </form>
+        </div>
 
 
+        <div class="div1">
+            <h1>Get Available Parts</h1>
+            <form action="">
+                <button> Get Parts</button>
+            </form>
+        </div>
+        <div class="div2">
+            <h1>Create Car</h1>
+            <form action="">
+                <button>Create Car</button>
+            </form>
+        </div>
     </div>
-</body>
+
+
+    < </body>
 
 </html>
