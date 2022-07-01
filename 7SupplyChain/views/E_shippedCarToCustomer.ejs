@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer</title>
+</head>
+<style>
+    .main {
+        position: absolute;
+        margin-left: 23%;
+        display: flex;
+    }
+
+    .sub {
+        width: 400px;
+        height: 550px;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+
+    }
+
+    .sub3{
+        margin-left: 10px;
+        text-decoration: none;
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+        width: 480px;
+        height: 550px;
+    }
+    .sub5 {
+        height: 180px;
+        width: 270px;
+        margin-left: -18.5%;
+        /* margin-top: 20%; */
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+    }
+
+</style>
+
+<body>
+    <h2>Your Address</h2>
+    <p>0xfbbEd7502283AE0721DFdfC2b2F5b054c3937284</p>
+    <div class="main">
+        <div class="sub">
+            <h1>Customer Ordering Car </h1>
+            <form action="EPR_shippedCarToCustomer" method="post">
+                <h3>Address Of The Customer</h3>
+                <input type="text" name="address" >
+                <h3>Enter Customer Name</h3>
+                <input type="text" name="customerName" >
+                <h3>Enter Quantity</h3>
+                <input type="text" name="customerQuantity" >
+                <h3>Enter Address Of The Manufacturer</h3>
+                <input type="text" name="payingToManufacturer" >
+                <h3>Enter Price In Ethers</h3>
+                <input type="text" name="price" >
+                <button>Order</button>
+                <h2>Reciept Of Car</h2>
+                <p></p>
+            </form>
+        </div>
+
+        <div class="sub3">
+            <h1>Status</h1>
+            <form action="EJ_ownerOfHashGet" method="post">
+                <p>Address Of The Customer</p>
+                <input type="text" name="address">
+                <p>Order Hash</p>
+                <input type="text" name="orderHash">
+                <button> Status </button>
+                <%if(Owner_Address!=0){%>
+                    <p>Owner Address : <%=Owner_Address%></p>
+                    <p>Owner Name : <%=Owner_Name%></p>
+                    <p>Product Name : <%=Product_Name%>
+                    </p><p>Product Status : <%=Product_Status%></p>
+                    <p>Payment Status : <%=Payment_Status%></p>
+                    <%}%>
+            </form>
+        </div>
+        <div class="sub5">
+            <h1>Check Balance</h1>
+            <form action="EK_manufacureBalance" method="post">
+                <input type="text" name="address" placeholder="Enter Your Address">
+                <input type="text" placeholder="<%=balance%>">
+                <button>Check Balance</button>
+                <p></p>
+            </form>
+        </div>
+    <div>
+
+            
+</body>
+
+</html>

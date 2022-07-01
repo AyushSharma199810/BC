@@ -11,4 +11,12 @@ rout.get('/B_supplierResponse',control.B_supplierResponse);
 rout.post('/B_supplierResponseGet',control.B_supplierResponseGet);
 rout.post('/BJ_ownerOfHashGet',control.BJ_ownerOfHashGet);
 rout.post('/K_manufacureBalance',control.K_manufacureBalance);
+rout.post('/D_creatingCar',control.D_creatingCar);
+rout.post('/G_getCarDetails',control.G_getCarDetails);
+rout.post('/BK_manufacureBalance',control.BK_manufacureBalance);
+rout.get('/E_shippedCarToCustomer',control.E_shippedCarToCustomer);
+rout.post('/EPR_shippedCarToCustomer',control.EPR_shippedCarToCustomer);
+rout.post('/EJ_ownerOfHashGet',control.EJ_ownerOfHashGet);
+rout.post('/EK_manufacureBalance',control.EK_manufacureBalance);
+
 module.exports= {rout};

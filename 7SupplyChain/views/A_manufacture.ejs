@@ -53,10 +53,10 @@
     }
 
     .sub4 {
-        height: 200px;
+        height: 230px;
         width: 600px;
         text-align: center;
-        margin-left: -22.4%;
+        margin-left: -19.5%;
         margin-right: 10px;
         margin-top: 11%;
         text-decoration: none;
@@ -70,7 +70,7 @@
     .sub5 {
         height: 180px;
         width: 270px;
-        margin-left: -10%;
+        margin-left: -8.5%;
         /* margin-top: 20%; */
         border: 2px solid black;
         color: white;
@@ -80,7 +80,7 @@
 
     .div1 {
 
-        margin-left: -40%;
+        margin-left: -39%;
         margin-top: 20%;
         border: 2px solid black;
         color: white;
@@ -89,8 +89,8 @@
     }
 
     .div2 {
-        height: 200px;
-        width: 200px;
+        height: 280px;
+        width: 600px;
         margin-left: 5%;
         margin-top: 20%;
         border: 2px solid black;
@@ -98,9 +98,11 @@
         background-color: grey;
         border-radius: 10px;
     }
+    
 </style>
 
 <body>
+    
     <div class="main">
         <div class="sub">
             <h1>Request For Parts</h1>
@@ -145,6 +147,9 @@
                         <input type="text" placeholder="Enter Supplier Address" name="address2">
                         <input type="text" placeholder="Enter Ethers You Want To Send" name="price">
                         <button>Pay</button>
+                        <%if(toPrintPaymentStatus==true){%>
+                        <p>Payment Completed</p>
+                        <%}%>
                     </form>
         </div>
         <div class="sub3">
@@ -172,8 +177,8 @@
         <div class="sub5">
             <h1>Check Balance</h1>
             <form action="K_manufacureBalance" method="post">
-                <input type="text" name="address"  placeholder="Enter Your Address">
-                <input type="text"  placeholder="<%=balance%>">
+                <input type="text" name="address" placeholder="Enter Your Address">
+                <input type="text" placeholder="<%=balance%>">
                 <button>Check Balance</button>
                 <p></p>
             </form>
@@ -181,20 +186,40 @@
 
 
         <div class="div1">
-            <h1>Get Available Parts</h1>
-            <form action="">
+            <h1>Get Car Details</h1>
+            <form action="G_getCarDetails" method="post">
+                <input type="text" name="address" placeholder="Enter Manufacturer Address">
+                <input type="text" name="hash" placeholder="Enter Manufacturer Created Hash">
                 <button> Get Parts</button>
+                <p>Manufacturer Part Name : </p>
+                <p><%=manufacturerPartName%></p>
+                <p>Manufacture Name : </p>
+                <input type="text" placeholder="<%=manufactureName%>">
+                <p>Manufacture Price : </p>
+                <input type="text" placeholder="<%=manufacturePrice%>">
+                <p>Manufacture Date : </p>
+                <input type="text" placeholder="<%=manufactureDate%>">
+                <p>Manufacture Quantity : </p>
+                <input type="text" placeholder="<%=manufactureQuantity%>">
             </form>
         </div>
         <div class="div2">
             <h1>Create Car</h1>
-            <form action="">
+            <form action="D_creatingCar" method="post">
+                <input type="text" name="address" placeholder="Enter Manufacturer Address">
+                <input type="text" name="productName" placeholder="Enter Product Name">
+                <input type="text" name="productPrice" placeholder="Enter Product Price">
+                <input type="text" name="date" placeholder="Enter Manufacture Date">
+                <input type="text" name="quantity" placeholder="Enter Quantity">
                 <button>Create Car</button>
+                <h2>Created Car Ordr Hash</h2>
+                <p><%=hash3%></p>
             </form>
         </div>
     </div>
 
-
-    < </body>
+    <h2>Your Address</h2>
+    <p>0x3B117F9902E6B259ACFB15fDb43A4Aa708d1892A</p>
+</body>
 
 </html>

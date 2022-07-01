@@ -164,6 +164,7 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
   function D_creatingCar(address _manufactureAddress , string memory _productName , uint _productPrice , string memory _date , uint _quantity) public returns(bytes32){
     require(_manufactureAddress == manufactureAddress);
     require(msg.sender==manufactureAddress);
+    require(_quantity==1,"Cannot Made More Than One Car");
     require(requiredParts == true,'Without All Parts Car Cannot Made');
     require(registry[0].quantity > 0,'Enter All Required Field In Manufacture');
       //saving supplier data
@@ -212,11 +213,12 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
 
   function E_shippedCarToCustomer(string memory _customerName , uint _customerQuantity , address payable _payingToManufacturer )public payable returns(bytes32){
     // payment
-       require(msg.value == _customerQuantity*details[manufacturerCreatedHash].manufacturePrice," Manufacture And Customer Price Not Matching Depending Upon Quantity");
+       require(_customerQuantity==1,"You Cannot Order More Than 1 Car");
+       require(_payingToManufacturer==manufactureAddress,"Manufacturer Address Is Incorrect Or Manufacture Not Made The Car");
+       require(msg.value ==details[manufacturerCreatedHash].manufacturePrice," Manufacture And Customer Price Not Matching Depending Upon Quantity");
     _payingToManufacturer.transfer(msg.value);
     details[manufacturerCreatedHash].paymentStatus ="Payment Complete";
     details[manufacturerCreatedHash].productStatus = " Delivered To Customer";
-
       details[manufacturerCreatedHash].manufactureQuantity = details[manufacturerCreatedHash].manufactureQuantity-_customerQuantity;
       //saving supplier data
     registry[0].customerName = _customerName;
@@ -237,7 +239,7 @@ function A_manufactureRequest(string memory _partName , uint _quantity , string 
       owner[manufacturerCreatedHash].ownerName = _customerName;
       details[manufacturerCreatedHash].productName =details[manufacturerCreatedHash].manufactureProductName ;
 
-         return customerCreatedHash;
+         return manufacturerCreatedHash;
   }
 
   function F_getCustomerDetail(bytes32 _customerCreatedHash)view public returns(string memory customerName , uint customerQuantity , string memory customerProductName , uint customerPrice){

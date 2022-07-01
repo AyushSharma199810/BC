@@ -53,7 +53,7 @@
         height: 200px;
         width: 600px;
         text-align: center;
-        margin-left: -28.7%;
+        margin-left: -25.7%;
         margin-right: 10px;
         margin-top: 15%;
         text-decoration: none;
@@ -63,8 +63,19 @@
         border-radius: 10px;
         padding: 10px;
     }
+    .sub5 {
+        height: 180px;
+        width: 270px;
+        margin-left: -8.5%;
+        /* margin-top: 20%; */
+        border: 2px solid black;
+        color: white;
+        background-color: grey;
+        border-radius: 10px;
+    }
 </style>
 <body>
+    
     <div class="main">
         <div class="sub">
             <h1>Create Part</h1>
@@ -92,7 +103,7 @@
         </div>
         <br>
         <div class="sub4">
-            <h1>Oders Hash Created</h1>
+            <h1>Part Oders Hash Created</h1>
             <%if(hash2!=0){%>
                 <%hash2.forEach(function(item){%>
                     <li>
@@ -119,9 +130,19 @@
                     <%}%>
             </form>
         </div>
-
+        <div class="sub5">
+            <h1>Check Balance</h1>
+            <form action="BK_manufacureBalance" method="post">
+                <input type="text" name="address" placeholder="Enter Your Address">
+                <input type="text" placeholder="<%=balance%>">
+                <button>Check Balance</button>
+                <p></p>
+            </form>
+        </div>
 
     </div>
+    <h2>Your Address</h2>
+    <p>0x8a16a1E829997D64bAe8aAC9cf461EA9F15baC29</p>
 </body>
 
 </html>

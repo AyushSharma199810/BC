@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 // app.use(express.static(__dirname+'/Controlers'));
 // console.log(__dirname);
 app.set('view engine', 'ejs')
-const port =  process.env.PORT||2003;
+const port =  process.env.PORT||2000;
 app.use('/',router.rout);
 app.listen(port,()=>{
     console.log("Connection Successfull at port http://localhost:" +port)
